@@ -19,3 +19,4 @@ An advanced Library Management System implemented using Python and Object-Orient
    ```bash
    git clone https://github.com/badreddin98/Library_Management_System
    cd Library_Management_System
+# Library_Management_System.db
