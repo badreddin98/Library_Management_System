@@ -3,10 +3,11 @@ from datetime import datetime
 
 connection = mysql.connector.connect(
     host="localhost",
-    user="root",           # Use your MySQL username
-    password="callofdutY4#",  # Replace with your MySQL password
+    user="root",
+    password="callofdutY4#",
     database="library_management"
 )
+
 class Book:
     def __init__(self, title, author_id, isbn, publication_date):
         self.title = title
@@ -22,10 +23,10 @@ class Book:
         publication_date = input("Enter publication date (YYYY-MM-DD): ")
 
         cursor = connection.cursor()
-        query = """
+        query = '''
         INSERT INTO books (title, author_id, isbn, publication_date, availability)
         VALUES (%s, %s, %s, %s, %s)
-        """
+        '''
         values = (title, author_id, isbn, publication_date, True)
         cursor.execute(query, values)
         connection.commit()
@@ -72,3 +73,62 @@ class Book:
         cursor.execute("SELECT * FROM books")
         for book in cursor.fetchall():
             print(book)
+
+class Author:
+    def __init__(self, name, biography):
+        self.name = name
+        self.biography = biography
+
+    @staticmethod
+    def add_author():
+        name = input("Enter author name: ")
+        biography = input("Enter author biography: ")
+
+        cursor = connection.cursor()
+        query = '''
+        INSERT INTO authors (name, biography)
+        VALUES (%s, %s)
+        '''
+        values = (name, biography)
+        cursor.execute(query, values)
+        connection.commit()
+        print("Author added successfully.")
+
+    @staticmethod
+    def display_authors():
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM authors")
+        for author in cursor.fetchall():
+            print(author)
+
+class User:
+    def __init__(self, name, library_id):
+        self.name = name
+        self.library_id = library_id
+
+    @staticmethod
+    def add_user():
+        name = input("Enter user name: ")
+        library_id = input("Enter user library ID: ")
+
+        cursor = connection.cursor()
+        query = '''
+        INSERT INTO users (name, library_id)
+        VALUES (%s, %s)
+        '''
+        values = (name, library_id)
+        cursor.execute(query, values)
+        connection.commit()
+        print("User added successfully.")
+
+    @staticmethod
+    def display_users():
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM users")
+        for user in cursor.fetchall():
+            print(user)
+
+def close_connection():
+    if connection.is_connected():
+        connection.close()
+        print("MySQL connection is closed.")
