@@ -1,6 +1,4 @@
-from book import Book
-from author import Author
-from user import User
+from library_db import Book, Author, User
 
 def main_menu():
     while True:
@@ -43,7 +41,10 @@ def book_operations():
                 author_id = int(input("\nEnter author ID (or 0 to add a new author first): "))
                 if author_id == 0:
                     print("\nLet's add a new author first:")
-                    Author.add_author()
+                    name = input("Enter author name: ")
+                    biography = input("Enter author biography (optional): ")
+                    new_author = Author(name, biography)
+                    new_author.save_to_db()
                     print("\nNow let's add the book. Available Authors:")
                     Author.display_authors()
                     author_id = int(input("\nEnter author ID for the book: "))
@@ -98,11 +99,33 @@ def user_operations():
         choice = input("Select an option: ")
 
         if choice == '1':
-            User.add_user()
+            try:
+                name = input("Enter user name: ")
+                email = input("Enter user email: ")
+                phone = input("Enter user phone (optional): ")
+                if not phone.strip():
+                    phone = None
+                user = User(name, email, phone)
+                user.save_to_db()
+            except Exception as e:
+                print(f"Error: {e}")
         elif choice == '2':
             User.display_users()
         elif choice == '3':
-            User.update_user()
+            User.display_users()
+            try:
+                user_id = int(input("\nEnter user ID to update: "))
+                name = input("Enter new name (or press enter to skip): ")
+                email = input("Enter new email (or press enter to skip): ")
+                phone = input("Enter new phone (or press enter to skip): ")
+                User.update_user(user_id, 
+                               name if name.strip() else None,
+                               email if email.strip() else None,
+                               phone if phone.strip() else None)
+            except ValueError:
+                print("Invalid input. Please enter a valid number for user ID.")
+            except Exception as e:
+                print(f"Error: {e}")
         elif choice == '4':
             User.display_users()
             try:
@@ -127,11 +150,30 @@ def author_operations():
         choice = input("Select an option: ")
 
         if choice == '1':
-            Author.add_author()
+            try:
+                name = input("Enter author name: ")
+                biography = input("Enter author biography (optional): ")
+                if not biography.strip():
+                    biography = None
+                author = Author(name, biography)
+                author.save_to_db()
+            except Exception as e:
+                print(f"Error: {e}")
         elif choice == '2':
             Author.display_authors()
         elif choice == '3':
-            Author.update_author()
+            Author.display_authors()
+            try:
+                author_id = int(input("\nEnter author ID to update: "))
+                name = input("Enter new name (or press enter to skip): ")
+                biography = input("Enter new biography (or press enter to skip): ")
+                Author.update_author(author_id,
+                                  name if name.strip() else None,
+                                  biography if biography.strip() else None)
+            except ValueError:
+                print("Invalid input. Please enter a valid number for author ID.")
+            except Exception as e:
+                print(f"Error: {e}")
         elif choice == '4':
             break
         else:

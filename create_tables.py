@@ -4,7 +4,7 @@ import mysql.connector
 root_connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="@@@@"
+    password="@@@@#"
 )
 
 def create_database():
@@ -22,7 +22,7 @@ def create_database():
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="@@@@",
+    password="@@@@#",
     database="library_management"
 )
 
